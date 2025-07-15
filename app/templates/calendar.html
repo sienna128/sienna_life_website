@@ -1,0 +1,59 @@
+{% extends "layout.html" %}
+
+{% block title %}Calendar{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/calendar.css') }}">
+{% endblock %}
+
+{% block content %}
+<h1 class="page-title">My Calendar</h1>
+
+<button id="addEventBtn" class="btn-teal">Add New Event</button>
+
+<!-- Modal Overlay -->
+<div id="modalOverlay" class="modal-overlay"></div>
+
+<!-- Modal -->
+<div id="eventModal" class="modal">
+    <form method="POST" action="{{ url_for('calendar.calendar') }}" class="modal-form">
+        <h2>Add Event</h2>
+        <label>Name:</label>
+        <input type="text" name="name" required>
+
+        <label>Category:</label>
+        <input type="text" name="category">
+
+        <label>Color:</label>
+        <input type="color" name="color" value="#008080">
+
+        <label>Date:</label>
+        <input type="date" name="date" required>
+
+        <label>Start Time:</label>
+        <input type="time" name="start_time" required>
+
+        <label>End Time:</label>
+        <input type="time" name="end_time" required>
+
+        <div class="modal-buttons">
+            <button type="submit" class="btn-teal">Save</button>
+            <button type="button" id="closeModalBtn" class="btn-cancel">Cancel</button>
+        </div>
+    </form>
+</div>
+
+<h2 class="subheading">Upcoming Events</h2>
+<ul class="event-list">
+    {% for event in events %}
+        <li class="event-item" data-color="{{ event.color | default('#000') }}">
+            <strong>{{ event.name }}</strong> — {{ event.category or 'No category' }}<br>
+            📅 {{ event.date }} | 🕒 {{ event.start_time }} – {{ event.end_time }}
+        </li>
+    {% else %}
+        <li class="event-item empty">No events yet.</li>
+    {% endfor %}
+</ul>
+
+<script src="{{ url_for('static', filename='js/calendar.js') }}"></script>
+{% endblock %}

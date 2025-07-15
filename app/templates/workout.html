@@ -1,0 +1,59 @@
+{% extends "layout.html" %}
+
+{% block title %}Workout Log{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/workout.css') }}">
+{% endblock %}
+
+{% block content %}
+<h1 class="page-title">Workout Log</h1>
+
+<button id="addWorkoutBtn" class="btn-teal">Add Workout</button>
+
+<!-- Modal Overlay -->
+<div id="modalOverlay" class="modal-overlay"></div>
+
+<!-- Modal -->
+<div id="workoutModal" class="modal">
+    <form method="POST" action="{{ url_for('workout.workout') }}" class="modal-form">
+        <h2>Add Workout</h2>
+
+        <label>Exercise:</label>
+        <input type="text" name="exercise" required>
+
+        <label>Date:</label>
+        <input type="date" name="date" required>
+
+        <label>Sets:</label>
+        <input type="number" name="sets" min="1">
+
+        <label>Reps:</label>
+        <input type="number" name="reps" min="1">
+
+        <label>Notes:</label>
+        <textarea name="notes" rows="3"></textarea>
+
+        <div class="modal-buttons">
+            <button type="submit" class="btn-teal">Save</button>
+            <button type="button" id="closeModalBtn" class="btn-cancel">Cancel</button>
+        </div>
+    </form>
+</div>
+
+<h2 class="subheading">Past Workouts</h2>
+<ul class="workout-list">
+    {% for log in logs %}
+        <li class="workout-item">
+            <strong>{{ log.exercise }}</strong><br>
+            🗓 {{ log.date }}<br>
+            Sets: {{ log.sets or "—" }}, Reps: {{ log.reps or "—" }}<br>
+            {% if log.notes %}<em>{{ log.notes }}</em>{% endif %}
+        </li>
+    {% else %}
+        <li class="workout-item empty">No workouts logged yet.</li>
+    {% endfor %}
+</ul>
+
+<script src="{{ url_for('static', filename='js/workout.js') }}"></script>
+{% endblock %}
