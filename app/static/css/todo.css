@@ -1,0 +1,50 @@
+#todoModal, #modalOverlay {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+}
+
+#modalOverlay {
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+#todoModal {
+  background-color: white;
+  padding: 20px;
+  border-radius: 12px;
+  width: 300px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: fixed;
+}
+
+.priority.low {
+  color: green;
+}
+.priority.medium {
+  color: orange;
+}
+.priority.high {
+  color: red;
+}
+
+.completed {
+  color: gray;
+  text-decoration: line-through;
+}
+
+.delete-btn {
+  background: none;
+  border: none;
+  color: #e74c3c;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-left: 10px;
+  vertical-align: middle;
+}
+
+.delete-btn:hover {
+  color: #c0392b;
+}

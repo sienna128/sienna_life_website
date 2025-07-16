@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+{% block title %}To-Do List{% endblock %}
+
+{% block content %}
+<h1>To-Do List</h1>
+<button id="addTodoBtn">Add Task</button>
+
+<div id="modalOverlay"></div>
+<div id="todoModal">
+    <form method="POST" action="{{ url_for('todo.todo') }}">
+        <label>Name:</label><br>
+        <input type="text" name="name" required><br><br>
+
+        <label>Description:</label><br>
+        <textarea name="description"></textarea><br><br>
+
+        <label>Due Date:</label><br>
+        <input type="date" name="due_date"><br><br>
+
+        <label>Priority:</label><br>
+        <select name="priority">
+            <option value="Low">Low</option>
+            <option value="Medium" selected>Medium</option>
+            <option value="High">High</option>
+        </select><br><br>
+
+        <button type="submit">Add Task</button>
+        <button type="button" id="closeModalBtn">Cancel</button>
+    </form>
+</div>
+
+<h2>Tasks</h2>
+<ul>
+    {% for todo in todos %}
+        <li class="{% if todo.completed %}completed{% endif %}">
+            <form method="POST" action="{{ url_for('todo.toggle_todo', todo_id=todo._id) }}" style="display:inline;">
+                <input type="checkbox" onchange="this.form.submit()" {% if todo.completed %}checked{% endif %}>
+            </form>
+
+            <strong>{{ todo.name }}</strong> - {{ todo.description or 'No description' }}<br>
+            Entered: {{ todo.date_entered }} | Due: {{ todo.due_date or 'No due date' }}<br>
+            Priority:
+            <span class="priority {{ todo.priority | lower }}">{{ todo.priority }}</span>
+
+            <!-- 🗑️ Delete button -->
+            <form method="POST" action="{{ url_for('todo.delete_todo', todo_id=todo._id) }}" style="display:inline;">
+                <button type="submit" class="delete-btn" title="Delete Task">🗑️</button>
+            </form>
+        </li>
+    {% else %}
+        <li>No tasks yet.</li>
+    {% endfor %}
+</ul>
+
+<script>
+  const modal = document.getElementById('todoModal');
+  const overlay = document.getElementById('modalOverlay');
+  const addBtn = document.getElementById('addTodoBtn');
+  const closeBtn = document.getElementById('closeModalBtn');
+
+  function showModal() {
+    modal.style.display = 'block';
+    overlay.style.display = 'block';
+  }
+  function hideModal() {
+    modal.style.display = 'none';
+    overlay.style.display = 'none';
+  }
+
+  addBtn.onclick = showModal;
+  closeBtn.onclick = hideModal;
+  overlay.onclick = hideModal;
+</script>
+{% endblock %}

@@ -15,9 +15,11 @@ def create_app():
     from app.routes.home import home_bp
     from app.routes.calendar import calendar_bp
     from app.routes.workout import workout_bp
+    from app.routes.todo import todo_bp
 
     app.register_blueprint(home_bp)
     app.register_blueprint(calendar_bp, url_prefix="/calendar")
     app.register_blueprint(workout_bp, url_prefix="/workout")
+    app.register_blueprint(todo_bp, url_prefix="/todo")
 
     return app
